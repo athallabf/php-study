@@ -5,15 +5,38 @@ include('config/database.php');
 $name = $email = $body = '';
 $nameErr = $emailErr = $bodyErr = '';
 
+function validateName($name)
+{
+  if (empty($name)) {
+    return 'Name is required';
+  } else {
+    return htmlspecialchars($name);
+  }
+}
+
+function validateEmail($email)
+{
+  if (empty($email)) {
+    return 'Email is required';
+  } else {
+    return htmlspecialchars($email);
+  }
+}
+
+function validateBody($body)
+{
+  if (empty($body)) {
+    return 'Body is required';
+  } else {
+    return htmlspecialchars($body);
+  }
+}
+
 if (isset($_POST['submit'])) {
-  // Validate name
-  empty($_POST['name']) ? $nameErr = 'Name is required' : $name = htmlspecialchars($_POST['name']);
 
-  // Validate email
-  empty($_POST['email']) ? $emailErr = 'Email is required' : $email = htmlspecialchars($_POST['email']);
-
-  // Validate body
-  empty($_POST['body']) ? $bodyErr = 'Body is required' : $body = htmlspecialchars($_POST['body']);
+  $name = validateName($_POST['name']);
+  $email = validateEmail($_POST['email']);
+  $body = validateBody($_POST['body']);
 
   if (empty($nameErr) && empty($emailErr) && empty($bodyErr)) {
     $sql = "INSERT INTO feedback (name, email, body) VALUES ('$name', '$email', '$body')";
@@ -25,6 +48,7 @@ if (isset($_POST['submit'])) {
     }
   }
 }
+
 include 'inc/header.php';
 ?>
 
